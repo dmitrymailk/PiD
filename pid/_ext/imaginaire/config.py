@@ -31,7 +31,6 @@ try:
     USE_MEGATRON = True
 except ImportError:
     USE_MEGATRON = False
-    print("Megatron-core is not installed.")
 
 from pid._ext.imaginaire.lazy_config import LazyCall as L
 from pid._ext.imaginaire.lazy_config import LazyDict

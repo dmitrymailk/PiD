@@ -17,7 +17,6 @@ import gc
 import math
 import os
 
-import pynvml
 from loguru import logger as logging
 
 
@@ -28,6 +27,8 @@ def get_gpu_architecture():
     Returns:
         str: The GPU architecture, which can be "H100", "A100", or "Other".
     """
+    import pynvml
+
     try:
         pynvml.nvmlInit()
         device_count = pynvml.nvmlDeviceGetCount()
@@ -65,6 +66,8 @@ class GPUArchitectureNotSupported(Exception):
 
 
 def print_gpu_mem(str=None):
+    import pynvml
+
     try:
         pynvml.nvmlInit()
         meminfo = pynvml.nvmlDeviceGetMemoryInfo(pynvml.nvmlDeviceGetHandleByIndex(0))
@@ -86,6 +89,8 @@ def force_gc():
 
 
 def gpu0_has_80gb_or_less():
+    import pynvml
+
     try:
         pynvml.nvmlInit()
         meminfo = pynvml.nvmlDeviceGetMemoryInfo(pynvml.nvmlDeviceGetHandleByIndex(0))
@@ -98,13 +103,19 @@ class Device:
     _nvml_affinity_elements = math.ceil(os.cpu_count() / 64)  # type: ignore
 
     def __init__(self, device_idx: int):
+        import pynvml
+
         super().__init__()
         self.handle = pynvml.nvmlDeviceGetHandleByIndex(device_idx)
 
     def get_name(self) -> str:
+        import pynvml
+
         return pynvml.nvmlDeviceGetName(self.handle)
 
     def get_cpu_affinity(self) -> list[int]:
+        import pynvml
+
         affinity_string = ""
         for j in pynvml.nvmlDeviceGetCpuAffinity(self.handle, Device._nvml_affinity_elements):
             # assume nvml returns list of 64 bit ints

@@ -24,7 +24,6 @@ from contextlib import contextmanager
 from datetime import timedelta
 from typing import TYPE_CHECKING, Any, Callable, Container, Optional
 
-import pynvml
 import torch
 import torch.distributed as dist
 from torch.distributed import get_process_group_ranks
@@ -43,11 +42,13 @@ if TYPE_CHECKING:
 try:
     from megatron.core import parallel_state
 except ImportError:
-    print("Megatron-core is not installed.")
+    pass
 
 
 def init() -> int | None:
     """Initialize distributed training."""
+    import pynvml
+
     if dist.is_initialized():
         return torch.cuda.current_device()
 
