@@ -130,3 +130,4 @@ slurm-*.out
 
 pid/_src/inference/video_demo
 convert_dcp_to_pt.py
+paper/*
